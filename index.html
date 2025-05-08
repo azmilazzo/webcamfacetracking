@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WebAR.rocks.face Tracking Test</title>
     <!-- Correct CDN for WebAR.rocks.face -->
-    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/dist/WebARRocksFace.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face/dist/WebARRocksFace.js"></script>
     <style>
         body {
             margin: 0;
@@ -28,7 +28,6 @@
     </style>
 </head>
 <body>
-    <video id="video" autoplay muted playsinline></video>
     <canvas id="webglCanvas"></canvas>
     <canvas id="overlay"></canvas>
 
@@ -45,7 +44,7 @@
 
                 WebARRocksFace.init({
                     canvasId: 'webglCanvas',
-                    NNCPath: 'https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/dist/', // Path to neural network models
+                    NNCPath: 'https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face/dist/', // Path to models
                     callbackReady: (err, spec) => {
                         if (err) {
                             console.error('An error occurred:', err);
