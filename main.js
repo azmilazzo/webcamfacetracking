@@ -1,20 +1,20 @@
 function init_evaluators() {
-  // Define expressions
+  // Define expressions with increased sensitivity
   WebARRocksFaceExpressionsEvaluator.add_expressionEvaluator('OPEN_MOUTH', {
     refLandmarks: ["lowerLipBot", "chin"],
     landmarks: ["lowerLipBot", "upperLipTop"],
-    range: [0.8, 1.3],
+    range: [0.7, 1.2], // Adjusted for more sensitivity
     isInv: false,
     isDebug: true
   });
 
-  // Add more expressions as needed...
+  // Add more expressions with adjusted ranges as needed...
 }
 
 function init_triggers() {
   WebARRocksFaceExpressionsEvaluator.add_trigger('OPEN_MOUTH', {
-    threshold: 0.5,
-    hysteresis: 0.1,
+    threshold: 0.4, // Lower threshold for higher sensitivity
+    hysteresis: 0.05, // Smaller hysteresis to reduce delay
     onStart: function() {
       console.log('TRIGGER FIRED - MOUTH OPEN START');
     },
@@ -23,7 +23,7 @@ function init_triggers() {
     }
   });
 
-  // Add more triggers as needed...
+  // Add more triggers with adjusted thresholds as needed...
 }
 
 function start() {
