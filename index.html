@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FaceMesh Tracking Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #2a2a2a;
+        }
+        video, canvas {
+            position: absolute;
+            width: 640px;
+            height: 480px;
+            transform: scaleX(-1);
+        }
+        canvas {
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <video id="video" autoplay muted playsinline></video>
+    <canvas id="overlay"></canvas>
+
+    <script>
+        const video = document.getElementById('video');
+        const overlay = document.getElementById('overlay');
+        const overlayContext = overlay.getContext('2d');
+
+        async function setupCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                video.srcObject = stream;
+                return new Promise((resolve) => {
+                    video.onloadeddata = () => {
+                        resolve(video);
+                    };
+                });
+            } catch (err) {
+                console.error("Error accessing webcam: " + err);
+            }
+        }
+
+        async function runFaceMesh() {
+            const model = await facemesh.load();
+            console.log("FaceMesh model loaded.");
+
+            async function detectFaces() {
+                const predictions = await model.estimateFaces(video);
+
+                overlayContext.clearRect(0, 0, overlay.width, overlay.height);
+
+                if (predictions.length > 0) {
+                    predictions.forEach(prediction => {
+                        const keypoints = prediction.scaledMesh;
+
+                        // Draw facial keypoints
+                        overlayContext.fillStyle = 'red';
+                        keypoints.forEach(([x, y]) => {
+                            overlayContext.beginPath();
+                            overlayContext.arc(x, y, 1, 0, 2 * Math.PI);
+                            overlayContext.fill();
+                        });
+                    });
+                } else {
+                    console.log("No face detected");
+                }
+
+                requestAnimationFrame(detectFaces);
+            }
+
+            detectFaces();
+        }
+
+        setupCamera().then(runFaceMesh);
+    </script>
+</body>
+</html>
