@@ -40,11 +40,9 @@
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
                 video.srcObject = stream;
-                return new Promise((resolve) => {
-                    video.onloadeddata = () => {
-                        resolve(video);
-                    };
-                });
+                await new Promise((resolve) => video.onloadeddata = resolve);
+                overlay.width = video.videoWidth;
+                overlay.height = video.videoHeight;
             } catch (err) {
                 console.error("Error accessing webcam: " + err);
             }
@@ -55,7 +53,7 @@
             console.log("FaceMesh model loaded.");
 
             async function detectFaces() {
-                const predictions = await model.estimateFaces(video);
+                const predictions = await model.estimateFaces({ input: video });
 
                 overlayContext.clearRect(0, 0, overlay.width, overlay.height);
 
