@@ -2,77 +2,22 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>WebAR.rocks.face Tracking Test</title>
-    <!-- Correct CDN for WebAR.rocks.face -->
-    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face/dist/WebARRocksFace.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WebAR.rocks.face Expressions Detection Demo</title>
+
+    <!-- Include WebAR.rocks.face via CDN -->
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/dist/WebARRocksFace.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksFaceDebugHelper.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksResizer.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/landmarksStabilizers/WebARRocksLMStabilizer.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksFaceExpressionsEvaluator.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #2a2a2a;
-        }
-        video, canvas {
-            position: absolute;
-            width: 640px;
-            height: 480px;
-            transform: scaleX(-1);
-        }
-        canvas {
-            z-index: 1;
-        }
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #2a2a2a; }
+        canvas { position: absolute; }
     </style>
 </head>
 <body>
-    <canvas id="webglCanvas"></canvas>
-    <canvas id="overlay"></canvas>
-
-    <script>
-        window.onload = () => {
-            const overlayCanvas = document.getElementById('overlay');
-            const overlayContext = overlayCanvas.getContext('2d');
-
-            function initFaceTracking() {
-                if (typeof WebARRocksFace === 'undefined') {
-                    console.error('WebARRocksFace is not defined');
-                    return;
-                }
-
-                WebARRocksFace.init({
-                    canvasId: 'webglCanvas',
-                    NNCPath: 'https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face/dist/', // Path to models
-                    callbackReady: (err, spec) => {
-                        if (err) {
-                            console.error('An error occurred:', err);
-                            return;
-                        }
-                        console.log('WebAR.rocks.face is ready');
-                    },
-                    callbackTrack: (detectState) => {
-                        overlayContext.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-
-                        if (detectState.detected > 0.6) {
-                            const positions = detectState.positions;
-                            overlayContext.fillStyle = 'red';
-
-                            positions.forEach(([x, y]) => {
-                                overlayContext.beginPath();
-                                overlayContext.arc(x, y, 2, 0, 2 * Math.PI);
-                                overlayContext.fill();
-                            });
-                        }
-                    }
-                });
-            }
-
-            overlayCanvas.width = window.innerWidth;
-            overlayCanvas.height = window.innerHeight;
-            initFaceTracking();
-        };
-    </script>
+    <canvas id="WebARRocksFaceCanvas" width="600" height="600"></canvas>
+    <script src="main.js"></script>
 </body>
 </html>
