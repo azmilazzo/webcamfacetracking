@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>WebAR.rocks.face Tracking Test</title>
-    <!-- Include the WebAR.rocks.face library -->
-    <script src="https://cdn.jsdelivr.net/npm/webarrocksface/dist/WebARRocksFace.js"></script>
+    <!-- Correct CDN for WebAR.rocks.face -->
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/dist/WebARRocksFace.js"></script>
     <style>
         body {
             margin: 0;
@@ -38,7 +38,7 @@
         function initFaceTracking() {
             WebARRocksFace.init({
                 canvasId: 'webglCanvas',
-                NNCPath: 'https://cdn.jsdelivr.net/npm/webarrocksface/dist/', // Path to neural network models
+                NNCPath: 'https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/dist/', // Path to neural network models
                 callbackReady: (err, spec) => {
                     if (err) {
                         console.error('An error occurred:', err);
