@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FaceMesh Tracking Test</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh"></script>
+    <title>WebAR.rocks.face Tracking Test</title>
+    <!-- Include the WebAR.rocks.face library -->
+    <script src="https://cdn.jsdelivr.net/npm/webarrocksface/dist/WebARRocksFace.js"></script>
     <style>
         body {
             margin: 0;
@@ -28,58 +28,46 @@
     </style>
 </head>
 <body>
-    <video id="video" autoplay muted playsinline></video>
+    <canvas id="webglCanvas"></canvas>
     <canvas id="overlay"></canvas>
 
     <script>
-        const video = document.getElementById('video');
-        const overlay = document.getElementById('overlay');
-        const overlayContext = overlay.getContext('2d');
+        const overlayCanvas = document.getElementById('overlay');
+        const overlayContext = overlayCanvas.getContext('2d');
 
-        async function setupCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
-                video.srcObject = stream;
-                await new Promise((resolve) => video.onloadeddata = resolve);
-                overlay.width = video.videoWidth;
-                overlay.height = video.videoHeight;
-            } catch (err) {
-                console.error("Error accessing webcam: " + err);
-            }
-        }
+        function initFaceTracking() {
+            WebARRocksFace.init({
+                canvasId: 'webglCanvas',
+                NNCPath: 'https://cdn.jsdelivr.net/npm/webarrocksface/dist/', // Path to neural network models
+                callbackReady: (err, spec) => {
+                    if (err) {
+                        console.error('An error occurred:', err);
+                        return;
+                    }
+                    console.log('WebAR.rocks.face is ready');
+                },
+                callbackTrack: (detectState) => {
+                    overlayContext.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
 
-        async function runFaceMesh() {
-            const model = await facemesh.load();
-            console.log("FaceMesh model loaded.");
-
-            async function detectFaces() {
-                const predictions = await model.estimateFaces({ input: video });
-
-                overlayContext.clearRect(0, 0, overlay.width, overlay.height);
-
-                if (predictions.length > 0) {
-                    predictions.forEach(prediction => {
-                        const keypoints = prediction.scaledMesh;
-
-                        // Draw facial keypoints
+                    if (detectState.detected > 0.6) {
+                        const positions = detectState.positions;
                         overlayContext.fillStyle = 'red';
-                        keypoints.forEach(([x, y]) => {
+
+                        positions.forEach(([x, y]) => {
                             overlayContext.beginPath();
-                            overlayContext.arc(x, y, 1, 0, 2 * Math.PI);
+                            overlayContext.arc(x, y, 2, 0, 2 * Math.PI);
                             overlayContext.fill();
                         });
-                    });
-                } else {
-                    console.log("No face detected");
+                    }
                 }
-
-                requestAnimationFrame(detectFaces);
-            }
-
-            detectFaces();
+            });
         }
 
-        setupCamera().then(runFaceMesh);
+        window.onload = () => {
+            overlayCanvas.width = window.innerWidth;
+            overlayCanvas.height = window.innerHeight;
+            initFaceTracking();
+        };
     </script>
 </body>
 </html>
