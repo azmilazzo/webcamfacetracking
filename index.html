@@ -2,23 +2,34 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <!-- Add HTTPS requirement -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Face Tracking with Nose Detection</title>
+    <title>Face Tracking (Fixed)</title>
 
-    <!-- WebAR.rocks.face dependencies -->
+    <!-- WebAR.rocks.face dependencies with fallback -->
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/dist/WebARRocksFace.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksFaceDebugHelper.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksResizer.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/landmarksStabilizers/WebARRocksLMStabilizer.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksFaceExpressionsEvaluator.js"></script>
-
+    
     <style>
-        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #2a2a2a; }
+        body { margin: 0; background: #2a2a2a; }
+        #cameraContainer { position: relative; width: 100vw; height: 100vh; }
         canvas { position: absolute; }
+        #errorMessage { 
+            display: none;
+            color: red;
+            padding: 20px;
+            font-family: Arial;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <canvas id="WebARRocksFaceCanvas" width="600" height="600"></canvas>
+    <div id="cameraContainer">
+        <canvas id="WebARRocksFaceCanvas"></canvas>
+        <div id="errorMessage"></div>
+    </div>
     <script src="main.js"></script>
 </body>
 </html>
