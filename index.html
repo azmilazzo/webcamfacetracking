@@ -2,22 +2,22 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Working Camera Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WebAR.rocks.face Expressions Detection Demo</title>
 
-    <!-- Original script loading -->
+    <!-- Include WebAR.rocks.face via CDN -->
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/dist/WebARRocksFace.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksFaceDebugHelper.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksResizer.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/landmarksStabilizers/WebARRocksLMStabilizer.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksFaceExpressionsEvaluator.js"></script>
     <style>
-        body { margin: 0; background: #2a2a2a; }
-        #cameraFeed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #2a2a2a; }
+        canvas { position: absolute; }
     </style>
 </head>
 <body>
-    <canvas id="WebARRocksFaceCanvas"></canvas>
-    <div id="errorMessage" style="display: none; color: red; padding: 20px;"></div>
+    <canvas id="WebARRocksFaceCanvas" width="600" height="600"></canvas>
     <script src="main.js"></script>
 </body>
 </html>
