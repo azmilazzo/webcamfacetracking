@@ -2,34 +2,22 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <!-- Add HTTPS requirement -->
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Face Tracking (Fixed)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working Camera Demo</title>
 
-    <!-- WebAR.rocks.face dependencies with fallback -->
+    <!-- Original script loading -->
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/dist/WebARRocksFace.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksFaceDebugHelper.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/WebAR-rocks/WebAR.rocks.face@latest/helpers/WebARRocksResizer.js"></script>
     
     <style>
         body { margin: 0; background: #2a2a2a; }
-        #cameraContainer { position: relative; width: 100vw; height: 100vh; }
-        canvas { position: absolute; }
-        #errorMessage { 
-            display: none;
-            color: red;
-            padding: 20px;
-            font-family: Arial;
-            text-align: center;
-        }
+        #cameraFeed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
     </style>
 </head>
 <body>
-    <div id="cameraContainer">
-        <canvas id="WebARRocksFaceCanvas"></canvas>
-        <div id="errorMessage"></div>
-    </div>
+    <canvas id="WebARRocksFaceCanvas"></canvas>
+    <div id="errorMessage" style="display: none; color: red; padding: 20px;"></div>
     <script src="main.js"></script>
 </body>
 </html>
